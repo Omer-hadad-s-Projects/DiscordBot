@@ -10,9 +10,7 @@ async def play_audio(ctx, url):
         await ctx.send("something is currently playing...")
         return
 
-    FFMPEG_OPTIONS =FFMPEG_OPTIONS = {
-    'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 -probesize 32M',
-    'options': '-vn'}
+    FFMPEG_OPTIONS =FFMPEG_OPTIONS ={'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options': '-vn -filter:a "volume=0.5"'}
     
     ydl_opts = {
     'format': 'bestaudio/best',
@@ -29,7 +27,7 @@ async def play_audio(ctx, url):
         info = ydl.extract_info(secret, download=False)
         url2 = info['url']
         print(url2)
-        source = discord.FFmpegPCMAudio(url2, **FFMPEG_OPTIONS)
+        source = discord.FFmpegOpusAudio(url2, **FFMPEG_OPTIONS)
         vc = ctx.voice_client
         vc.play(source)
         
