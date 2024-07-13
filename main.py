@@ -5,21 +5,22 @@ from discord import Intents, Message
 from responses import get_response
 from discord.ext import commands
 
-# STEP 0: LOAD OUR TOKEN FROM SOMEWHERE SAFE
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
+IS_DEBUG: Final[bool] = os.getenv('IS_DEBUG', False)
 
-# STEP 1: BOT SETUP
 intents: Intents = Intents.default()
 intents.message_content = True  # NOQA
-bot = commands.Bot(command_prefix='!', intents=intents)
+command_prefix: str = '!dev_' if IS_DEBUG else '!'
+bot = commands.Bot(command_prefix=command_prefix, intents=intents)
 
-# STEP 2: MESSAGE FUNCTIONALITY
-async def send_message(message: Message, user_message: str) -> None:
-    if not user_message:
-        print('(Message was empty because intents were not enabled probably)')
-        return
-
+async def send_message(message: Message, user_message: str, is_debug: bool) -> None:
+   
+    if(send_message_check_invalid_inputs(user_message, is_debug) == False): return
+    
+    user_message = trim_user_message_prefix(user_message, is_debug)
+    print(f'Trimmed user message: "{user_message}"')
+    
     try:
         ctx = await bot.get_context(message)
         response: str = await get_response(ctx, user_message)
@@ -30,13 +31,26 @@ async def send_message(message: Message, user_message: str) -> None:
     except Exception as e:
         print(e)
         
-# STEP 3: HANDLING THE STARTUP FOR OUR BOT
+def send_message_check_invalid_inputs(user_message: str, is_debug: bool) -> bool:
+    if not user_message:
+        print('(Message was empty because intents were not enabled probably)')
+        return False
+    
+    if(is_debug and not user_message.startswith('!dev_')):
+        print('Debug mode is enabled but the message does not start with "dev"')
+        return False
+    return True
+        
+def trim_user_message_prefix(user_message: str, is_debug: bool) -> str:
+    if(is_debug): return user_message[5:]
+    else: return user_message[1:]
+        
 @bot.event
 async def on_ready() -> None:
-    print(f'{bot.user} is now running!')
+    debug_string = 'Debug mode is enbaled' if IS_DEBUG else ''
+    print(f'{bot.user} is now running! {debug_string}')
 
 
-# STEP 4: HANDLING INCOMING MESSAGES
 @bot.event
 async def on_message(message: Message) -> None:
     if message.author == bot.user:
@@ -47,10 +61,9 @@ async def on_message(message: Message) -> None:
     channel: str = str(message.channel)
 
     print(f'[{channel}] {username}: "{user_message}"')
-    await send_message(message, user_message)
+    await send_message(message, user_message, IS_DEBUG)
 
 
-# STEP 5: MAIN ENTRY POINT
 def main() -> None:
     bot.run(token=TOKEN)
 
