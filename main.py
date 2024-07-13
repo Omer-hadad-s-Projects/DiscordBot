@@ -2,7 +2,7 @@ from typing import Final
 import os
 from dotenv import load_dotenv
 from discord import Intents, Message
-from responses import get_response
+from commands_handler import handle_command
 from discord.ext import commands
 
 load_dotenv()
@@ -23,13 +23,9 @@ async def send_message(message: Message, user_message: str, is_debug: bool) -> N
     
     try:
         ctx = await bot.get_context(message)
-        response: str = await get_response(ctx, user_message)
-        if response is None or response == '': 
-            print('No response found for this message')
-            return
-        await message.channel.send(response)
+        await handle_command(ctx, user_message)
     except Exception as e:
-        print(e)
+        message.channel.send(e)
         
 def send_message_check_invalid_inputs(user_message: str, is_debug: bool) -> bool:
     if not user_message:
