@@ -2,7 +2,7 @@ import discord
 import yt_dlp
 
 def is_song_playing(ctx):
-    return ctx.voice_client.is_playing()
+    return ctx.voice_client != None and ctx.voice_client.is_playing()
 
 async def play_audio(ctx, url):
     voice_channel = ctx.author.voice.channel
