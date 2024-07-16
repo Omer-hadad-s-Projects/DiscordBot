@@ -1,7 +1,8 @@
 from discord.ext.commands import Context
-from ytdlp_handler import play_audio, leave_voice_channel, is_song_playing
+from ytdlp_handler import play_audio, leave_voice_channel
 
 songsQueue : list[str] = []
+is_song_playing : bool = False
 
 async def handle_command(ctx: Context, input: str):
     if input.startswith('play'):
@@ -15,7 +16,7 @@ async def handle_command(ctx: Context, input: str):
     
 async def handle_command_play(ctx: Context, input: str):
     url = get_song_url_from_input(input)
-    if(is_song_playing(ctx)): await add_song_to_queue(url, ctx)
+    if(is_song_playing): await add_song_to_queue(url, ctx)
     else: await play_song(ctx, url)
 
 
@@ -31,17 +32,24 @@ async def add_song_to_queue(song_url: str, ctx: Context):
     await ctx.send(f'Added the song to the queue')
     
 async def play_song(ctx: Context, url: str):
+    global is_song_playing
     try:
+       is_song_playing = True
        await play_audio(ctx, url, on_song_end)
     except Exception as e:
         await ctx.send(f'An error occurred: {e} leaving voice channel')
         await leave_voice_channel(ctx)
+        is_song_playing = False
+        
 
 async def on_song_end(ctx: Context):
+    global is_song_playing
     print(f'Song ended checking next in queue count is:{len(songsQueue)}')
-    if(len(songsQueue) == 0): return
-    url = songsQueue.pop(0)
-    await play_song(ctx, url)
+    if(len(songsQueue) == 0): 
+        is_song_playing = False
+    else:
+        url = songsQueue.pop(0)
+        await play_song(ctx, url)
         
 async def stop(ctx: Context):
     await leave_voice_channel(ctx)

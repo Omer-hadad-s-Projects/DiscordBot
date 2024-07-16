@@ -15,8 +15,7 @@ ydl_opts = {
     }],
 }
 
-def is_song_playing(ctx):
-    return ctx.voice_client != None and ctx.voice_client.is_playing()
+
 
 async def play_audio(ctx, url,on_song_end):
     voice_channel = ctx.author.voice.channel
