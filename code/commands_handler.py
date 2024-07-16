@@ -32,7 +32,6 @@ async def add_song_to_queue(song_url: str, ctx: Context):
     
 async def play_song(ctx: Context, url: str):
     try:
-       await ctx.send('Playing the song')
        await play_audio(ctx, url, on_song_end)
     except Exception as e:
         await ctx.send(f'An error occurred: {e} leaving voice channel')

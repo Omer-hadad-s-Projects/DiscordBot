@@ -34,6 +34,8 @@ async def play_audio(ctx, url,on_song_end):
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         secret = url
         info = ydl.extract_info(secret, download=False)
+        song_title = info['title']
+        await ctx.send(f'Playing {song_title}')
         url2 = info['url']
         print(url2)
         source = discord.FFmpegOpusAudio(url2, **FFMPEG_OPTIONS)
