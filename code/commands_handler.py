@@ -6,6 +6,8 @@ songsQueue : list[str] = []
 async def handle_command(ctx: Context, input: str):
     if input.startswith('play'):
         url = get_song_url_from_input(input)
+        print(f'URL: {url}')
+        print(f'Ctx: {ctx == None} {ctx.voice_client == None}')
         if(is_song_playing(ctx)): add_song_to_queue(url)
         else: play_song(ctx, url)
     elif input.startswith('pause'):

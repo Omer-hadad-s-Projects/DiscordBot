@@ -25,7 +25,7 @@ async def send_message(message: Message, user_message: str, is_debug: bool) -> N
         ctx = await bot.get_context(message)
         await handle_command(ctx, user_message)
     except Exception as e:
-        message.channel.send(e)
+        await message.channel.send(e)
         
 def send_message_check_invalid_inputs(user_message: str, is_debug: bool) -> bool:
     if not user_message:
