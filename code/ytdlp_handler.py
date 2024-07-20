@@ -15,9 +15,13 @@ ydl_opts = {
     }],
 }
 
+ydl = yt_dlp.YoutubeDL(ydl_opts)
 
+def get_info(url):
+        info = ydl.extract_info(url, download=False)
+        return info
 
-async def play_audio(ctx, url,on_song_end):
+async def play_audio(ctx, info, on_song_end):
     voice_channel = ctx.author.voice.channel
     if ctx.voice_client is None:
         await voice_channel.connect()
@@ -30,16 +34,13 @@ async def play_audio(ctx, url,on_song_end):
         # Call the on_song_end function here
         asyncio.run_coroutine_threadsafe(on_song_end(ctx), ctx.bot.loop)
     
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        secret = url
-        info = ydl.extract_info(secret, download=False)
-        song_title = info['title']
-        await ctx.send(f'Playing {song_title}')
-        url2 = info['url']
-        print(url2)
-        source = discord.FFmpegOpusAudio(url2, **FFMPEG_OPTIONS)
-        vc = ctx.voice_client
-        vc.play(source, after=after_playing)
+    song_title = info['title']
+    await ctx.send(f'Playing {song_title}')
+    playUrl = info['url']
+    print(playUrl)
+    source = discord.FFmpegOpusAudio(playUrl, **FFMPEG_OPTIONS)
+    vc = ctx.voice_client
+    vc.play(source, after=after_playing)
             
 async def leave_voice_channel(ctx):
     if ctx.voice_client:
