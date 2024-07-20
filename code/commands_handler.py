@@ -1,5 +1,6 @@
 from discord.ext.commands import Context
 from ytdlp_handler import play_audio, leave_voice_channel, get_info, stop_song_playing
+from url_utility import is_valid_url
 
 songsQueue : list[dict] = []
 is_song_playing : bool = False
@@ -13,21 +14,20 @@ async def handle_command(ctx: Context, input: str):
         await next(ctx)
     elif input.startswith('help'):
         await send_help_text(ctx)
-    elif input[0] == '!':
-        raise Exception('No command found for this input')
-    else: raise Exception('')
+    else: await ctx.send('Invalid command, type !help to see the list of commands')
     
 async def handle_command_play(ctx: Context, input: str):
-    url = get_song_url_from_input(input)
+    url = await get_song_url_from_input(input)
+    if(url == None): 
+        await ctx.send('Please provide a valid url')
+        return
     info = get_info(url)
     if(is_song_playing): await add_song_to_queue(ctx, info)
     else: await play_song(ctx, info)
-
-
     
-def get_song_url_from_input(input: str) -> str:
+async def get_song_url_from_input(input: str) -> str:
      url = input[5:]
-     if(url == ''): raise ValueError("empty url")
+     if(not is_valid_url(url)): return None
      return url
     
 async def add_song_to_queue(ctx: Context, info: dict):
