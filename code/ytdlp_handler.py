@@ -35,7 +35,7 @@ async def play_audio(ctx, info, on_song_end):
         asyncio.run_coroutine_threadsafe(on_song_end(ctx), ctx.bot.loop)
     
     song_title = info['title']
-    await ctx.send(f'Playing {song_title}')
+    await ctx.send(f"Playing **{song_title}**")
     playUrl = info['url']
     print(playUrl)
     source = discord.FFmpegOpusAudio(playUrl, **FFMPEG_OPTIONS)

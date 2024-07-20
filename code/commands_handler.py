@@ -31,7 +31,7 @@ async def add_song_to_queue(ctx: Context, info: dict):
     songsQueue.append(info)
     print(f'Added the song to the queue, queue count: {len(songsQueue)}')
     title = info['title']
-    await ctx.send(f'Added {title} the queue')
+    await ctx.send(f"Added **{title}** to the queue")
     
 async def play_song(ctx: Context, info: dict):
     global is_song_playing
