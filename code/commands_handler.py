@@ -1,5 +1,5 @@
 from discord.ext.commands import Context
-from ytdlp_handler import play_audio, leave_voice_channel, get_info
+from ytdlp_handler import play_audio, leave_voice_channel, get_info, stop_song_playing
 
 songsQueue : list[dict] = []
 is_song_playing : bool = False
@@ -10,6 +10,8 @@ async def handle_command(ctx: Context, input: str):
     elif input.startswith('stop'):
         songsQueue.clear()
         return await stop(ctx)
+    elif input.startswith('next'):
+        await next(ctx)
     elif input[0] == '!':
         raise Exception('No command found for this input')
     else: raise Exception('')
@@ -42,7 +44,6 @@ async def play_song(ctx: Context, info: dict):
         await ctx.send(f'An error occurred: {e} leaving voice channel')
         await leave_voice_channel(ctx)
         is_song_playing = False
-        
 
 async def on_song_end(ctx: Context):
     global is_song_playing
@@ -54,6 +55,10 @@ async def on_song_end(ctx: Context):
     else:
         info = songsQueue.pop(0)
         await play_song(ctx, info)
+        
+async def next(ctx: Context):
+    if(len(songsQueue) == 0): return await ctx.send('No more songs in queue')
+    await stop_song_playing(ctx)
         
 async def stop(ctx: Context):
     await leave_voice_channel(ctx)

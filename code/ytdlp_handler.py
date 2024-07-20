@@ -41,6 +41,10 @@ async def play_audio(ctx, info, on_song_end):
     source = discord.FFmpegOpusAudio(playUrl, **FFMPEG_OPTIONS)
     vc = ctx.voice_client
     vc.play(source, after=after_playing)
+
+async def stop_song_playing(ctx):
+    vc = ctx.voice_client
+    if vc: vc.stop()
             
 async def leave_voice_channel(ctx):
     if ctx.voice_client:
