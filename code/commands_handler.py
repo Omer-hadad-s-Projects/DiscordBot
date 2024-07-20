@@ -8,10 +8,11 @@ async def handle_command(ctx: Context, input: str):
     if input.startswith('play'):
         await handle_command_play(ctx, input)
     elif input.startswith('stop'):
-        songsQueue.clear()
         return await stop(ctx)
     elif input.startswith('next'):
         await next(ctx)
+    elif input.startswith('help'):
+        await send_help_text(ctx)
     elif input[0] == '!':
         raise Exception('No command found for this input')
     else: raise Exception('')
@@ -61,5 +62,13 @@ async def next(ctx: Context):
     await stop_song_playing(ctx)
         
 async def stop(ctx: Context):
+    songsQueue.clear()
     await leave_voice_channel(ctx)
     await ctx.send('Stopped the song')
+    
+async def send_help_text(ctx: Context):
+    #print help text from file help.txt 
+    file = open('help.txt', 'r')
+    content = file.read()
+    await ctx.send(content)
+    

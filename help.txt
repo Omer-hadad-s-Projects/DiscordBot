@@ -1,0 +1,3 @@
+-**!play <youtube_url>**  plays the song or add it to the queue if song is playing
+-**!next**                plays next song in the queue if exists
+-**!stop**                stops the bot acitivity and clears the queue   
