@@ -49,6 +49,8 @@ async def on_song_end(ctx: Context):
     print(f'Song ended checking next in queue count is:{len(songsQueue)}')
     if(len(songsQueue) == 0): 
         is_song_playing = False
+        await ctx.send('No more songs in queue, leaving voice channel')
+        await leave_voice_channel(ctx)
     else:
         info = songsQueue.pop(0)
         await play_song(ctx, info)
