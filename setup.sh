@@ -5,3 +5,4 @@ pip3 install -U pip
 pip3 install -U python-dotenv
 pip3 install -U discord
 pip3 install -U yt_dlp
+pip3 install -U pynacl
