@@ -2,17 +2,19 @@ from discord.ext.commands import Context
 from ytdlp_handler import play_audio, leave_voice_channel, get_info, stop_song_playing
 from url_utility import is_valid_url
 
-songsQueue : list[dict] = []
+nextSongsList : list[dict] = []
 is_song_playing : bool = False
 
 async def handle_command(ctx: Context, input: str):
     if input.startswith('play'):
         await handle_command_play(ctx, input)
-    elif input.startswith('stop'):
-        return await stop(ctx)
-    elif input.startswith('next'):
+    elif input == 'stop':
+        return await stop(ctx)  
+    elif input == 'next':
         await next(ctx)
-    elif input.startswith('help'):
+    elif input == 'next songs':
+        await print_next_songs(ctx)
+    elif input == 'help':
         await send_help_text(ctx)
     else: await ctx.send('Invalid command, type !help to see the list of commands')
     
@@ -31,8 +33,8 @@ async def get_song_url_from_input(input: str) -> str:
      return url
     
 async def add_song_to_queue(ctx: Context, info: dict):
-    songsQueue.append(info)
-    print(f'Added the song to the queue, queue count: {len(songsQueue)}')
+    nextSongsList.append(info)
+    print(f'Added the song to the queue, queue count: {len(nextSongsList)}')
     title = info['title']
     await ctx.send(f"Added **{title}** to the queue")
     
@@ -48,21 +50,29 @@ async def play_song(ctx: Context, info: dict):
 
 async def on_song_end(ctx: Context):
     global is_song_playing
-    print(f'Song ended checking next in queue count is:{len(songsQueue)}')
-    if(len(songsQueue) == 0): 
+    print(f'Song ended checking next in queue count is:{len(nextSongsList)}')
+    if(len(nextSongsList) == 0): 
         is_song_playing = False
         await ctx.send('No more songs in queue, leaving voice channel')
         await leave_voice_channel(ctx)
     else:
-        info = songsQueue.pop(0)
+        info = nextSongsList.pop(0)
         await play_song(ctx, info)
-        
+
 async def next(ctx: Context):
-    if(len(songsQueue) == 0): return await ctx.send('No more songs in queue')
+    if(len(nextSongsList) == 0): return await ctx.send('No more songs in queue')
     await stop_song_playing(ctx)
+
+async def print_next_songs(ctx: Context):
+    if(len(nextSongsList) == 0): return await ctx.send('No more songs in queue')
+    songs = ''
+    for i, song in enumerate(nextSongsList):
+        title = song['title']
+        songs += f'{i+1}. {title}\n'
+    await ctx.send(f'{songs}')
         
 async def stop(ctx: Context):
-    songsQueue.clear()
+    nextSongsList.clear()
     await leave_voice_channel(ctx)
     await ctx.send('Stopped the song')
     
