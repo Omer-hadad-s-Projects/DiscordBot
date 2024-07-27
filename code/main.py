@@ -7,7 +7,7 @@ from discord.ext import commands
 
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
-IS_DEBUG: Final[bool] = os.getenv('IS_DEBUG', False)
+IS_DEBUG: bool = os.getenv('IS_DEBUG', 'False') == 'True'
 
 intents: Intents = Intents.default()
 intents.message_content = True  # NOQA
@@ -44,6 +44,7 @@ def trim_user_message_prefix(user_message: str, is_debug: bool) -> str:
         
 @bot.event
 async def on_ready() -> None:
+    print(f'{IS_DEBUG}')
     debug_string = 'Debug mode is enbaled' if IS_DEBUG else ''
     print(f'{bot.user} is now running! {debug_string}')
 
