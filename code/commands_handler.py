@@ -45,6 +45,7 @@ def check_command_locked(ctx: Context, input: str) -> bool:
 async def toggle_admin_lock(ctx: Context):
     if(not is_admin(ctx)):
         await ctx.send('Only admin can toggle admin lock')
+        return
     if(check_is_admin_locked()):
         deactivate_admin_lock()
         await ctx.send('Admin lock now deactivated')
