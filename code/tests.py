@@ -1,5 +1,6 @@
 import unittest
 from code.url_utility import is_valid_url, trim_url
+from code.admin_utility import get_admin_list_with_parameter
 
 class ProjectsTests(unittest.TestCase):
 
@@ -14,6 +15,12 @@ class ProjectsTests(unittest.TestCase):
         self.assertEqual(trim_url('https://www.youtube.com/watch?v=M-mtdN6R3bQ&list=PLw-VjHDlEOgvfn7wZ9I-9fZw0Ku8yZrQG'), 'https://www.youtube.com/watch?v=M-mtdN6R3bQ')
         self.assertEqual(trim_url('https://www.youtube.com/watch'), 'https://www.youtube.com/watch')
         self.assertEqual(trim_url(''), '')
+        
+    def test_get_admin_list(self):
+        self.assertEqual(get_admin_list_with_parameter('[2932997985419264]', False), [2932997985419264])
+        self.assertEqual(get_admin_list_with_parameter('[2932997985419264, 2932997985419265]', False), [2932997985419264, 2932997985419265])
+        self.assertEqual(get_admin_list_with_parameter('[]', False), [])
+        self.assertEqual(get_admin_list_with_parameter('[123, abc]', False), [123])
 
 if __name__ == '__main__':
     unittest.main()
