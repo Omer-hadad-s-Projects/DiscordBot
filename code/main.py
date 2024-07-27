@@ -46,7 +46,8 @@ def trim_user_message_prefix(user_message: str, is_debug: bool) -> str:
 async def on_ready() -> None:
     debug_string = 'Debug mode is enbaled' if IS_DEBUG else ''
     print(f'{bot.user} is now running! {debug_string}')
-    print(f'Admin list {os.getenv('ADMIN_LIST') }')
+    admin_list_str: Final[str] = os.getenv('ADMIN_LIST')
+    print(f'Admin list {admin_list_str}')
 
 
 @bot.event
