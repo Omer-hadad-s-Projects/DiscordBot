@@ -1,7 +1,6 @@
 from typing import Final
 import os
 
-admin_list_str: Final[str] = os.getenv('ADMIN_LIST')
 cached_admin_list = None
 is_admin_locked = False
 
@@ -24,6 +23,7 @@ def get_admin_list_with_parameter(admin_list_str, use_caching):
 
     
 def get_admin_list():
+    admin_list_str: Final[str] = os.getenv('ADMIN_LIST')
     return get_admin_list_with_parameter(admin_list_str, True)
 
 def activate_admin_lock():
