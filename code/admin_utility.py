@@ -9,6 +9,8 @@ def get_admin_list_with_parameter(admin_list_str, use_caching):
     global cached_admin_list
     if(use_caching and cached_admin_list is not None): 
         return cached_admin_list
+    if(admin_list_str == None):
+        return []
     admin_list_str = admin_list_str.strip('[]')
     elements = admin_list_str.split(',')
     admin_list = []
