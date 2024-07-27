@@ -23,15 +23,17 @@ async def handle_command(ctx: Context, input: str):
     if input == ADMIN_LOCK_COMMAND:
         await toggle_admin_lock(ctx)
     elif input.startswith(PLAY_COMMAND):
-        await handle_command_play(ctx, input)
+        await play_song_command(ctx, input)
     elif input == HELP_COMMAND:
         await send_help_text(ctx)
     elif input == STOP_COMMAND:
         await stop(ctx)
     elif input == NEXT_COMMAND:
-        await next(ctx)
+        await next_song(ctx)
     elif input == NEXT_SONGS_COMMAND:
         await print_next_songs(ctx)
+    elif input.startswith(REMOVE_COMMAND):
+        await remove_song(ctx, input)
     else:
         await ctx.send('Invalid command, type !help to see the list of commands')
     
@@ -55,7 +57,7 @@ def is_admin(ctx: Context):
     admin_list = get_admin_list()
     return admin_list.__contains__(sender_id)
     
-async def handle_command_play(ctx: Context, input: str):
+async def play_song_command(ctx: Context, input: str):
     url = get_song_url_from_input(input)
     if(url == None): 
         await ctx.send('Please provide a valid url')
@@ -91,7 +93,7 @@ async def on_song_end(ctx: Context):
         info = next_songs_list.pop(0)
         await play_song(ctx, info)
 
-async def next(ctx: Context):
+async def next_song(ctx: Context):
     if(len(next_songs_list) == 0): return await ctx.send('No more songs in queue')
     await stop_song_playing(ctx)
 
@@ -113,4 +115,28 @@ async def send_help_text(ctx: Context):
     file = open('help.txt', 'r')
     content = file.read()
     await ctx.send(content)
+
+async def remove_song(ctx: Context, input: str):
+    if(len(next_songs_list) == 0):
+        await ctx.send('No songs in queue to remove')
+        return
+    
+    song = input[7:]
+    if(song is None):
+        await ctx.send('No song number was provided')
+        return
+    
+    try:
+        intValue = int(song)
+    except ValueError:
+        await ctx.send('Invalid input, you need to add the song number that you want to remove')
+        return
+    
+    if(len(next_songs_list) + 1 < intValue):
+        await ctx.send(f'There is not song number {intValue} in the queue')   
+    else:
+        del next_songs_list[intValue - 1]
+        await ctx.send(f'Song number {intValue} in queue was removed')
+  
+
     
