@@ -10,14 +10,17 @@ This bot allows you to play songs in your Discord server using YouTube links.
 2. **Run the Setup Script**  
    Execute `setup.sh` and enter the bot secret key when prompted.
 
-3. **Install Dependencies**  
+3. **Add Admin Tokens (Optional)**  
+   To grant admin privileges, you can add the tokens of admin users.
+
+4. **Install Dependencies**  
    Wait for the setup script to finish installing the necessary project dependencies.
 
-4. **Launch the Bot**  
+5. **Launch the Bot**  
    Run `launch.sh` to start the bot.
 
-5. **Use the Help Command**  
+6. **Use the Help Command**  
    In your server chat, type `!help` to see the available commands.
 
-6. **Enjoy Your Music**  
+7. **Enjoy Your Music**  
    Play your favorite songs and enjoy! 😃

@@ -5,7 +5,7 @@ from discord import Intents, Message
 from commands_handler import handle_command
 from discord.ext import commands
 
-load_dotenv()
+load_dotenv('env/.env')
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
 IS_DEBUG: bool = os.getenv('IS_DEBUG', 'False') == 'True'
 

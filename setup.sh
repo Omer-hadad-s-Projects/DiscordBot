@@ -8,7 +8,8 @@ activate_venv() {
   fi
 }
 
-sh discord_token_saver.sh
+sh env/discord_token_saver.sh
+sh env/admin_token_saver.sh
 python3 -m venv .venv
 activate_venv
 pip3 install -U pip
