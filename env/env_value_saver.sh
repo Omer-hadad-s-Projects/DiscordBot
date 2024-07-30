@@ -6,22 +6,21 @@ if [ -z "$VALUE" ]; then
     exit 1
 fi
 
-# Construct the path for the .env file in the parent directory
-ENV_FILE=".env"
+ENV_FILE="env/.env"
+TEMP_FILE=$(mktemp)
 
-# Check if the .env file exists
 if [ ! -f "$ENV_FILE" ]; then
     echo ".env file not found! Creating a new one."
     touch "$ENV_FILE"
 fi
 
-# Add or update the key-value pair in the .env file
 if grep -q "^$KEY=" "$ENV_FILE"; then
-    # Update the existing key
-    sed -i.bak "s/^$KEY=.*/$KEY=$VALUE/" "$ENV_FILE"
+    sed "s/^$KEY=.*/$KEY=$VALUE/" "$ENV_FILE" > "$TEMP_FILE"
 else
-    # Add the new key
-    echo "$KEY=$VALUE" >>"$ENV_FILE"
+    cp "$ENV_FILE" "$TEMP_FILE"
+    echo "$KEY=$VALUE" >> "$TEMP_FILE"
 fi
+
+mv "$TEMP_FILE" "$ENV_FILE"
 
 echo "Saved $KEY=$VALUE to $ENV_FILE"

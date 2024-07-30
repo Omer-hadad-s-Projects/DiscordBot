@@ -7,4 +7,4 @@ fi
 
 WRAPPED_VALUE="[$VALUE]"
 
-sh env_value_saver.sh "ADMIN_LIST" "$WRAPPED_VALUE"
+sh env/env_value_saver.sh "ADMIN_LIST" "$WRAPPED_VALUE"

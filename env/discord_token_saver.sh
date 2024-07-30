@@ -9,4 +9,4 @@ if [ -z "$TOKEN" ]; then
   exit 1
 fi
 
-sh env_value_saver.sh "DISCORD_TOKEN" "$TOKEN"
+sh env/env_value_saver.sh "DISCORD_TOKEN" "$TOKEN"
