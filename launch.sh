@@ -1,3 +1,5 @@
+#!/bin/bash
+
 source .venv/bin/activate
 python3 -m unittest code.tests
 if [ $? -ne 0 ]; then
