@@ -6,6 +6,7 @@ COPY requirements.txt .
 
 RUN apt-get update \
     && apt-get install -y ffmpeg \
+    && apt-get install -y gcc libffi-dev python3-dev build-essential \
     && python3 -m venv .venv \
     && . .venv/bin/activate \
     && pip install --no-cache-dir -U pip \
