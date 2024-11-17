@@ -36,6 +36,10 @@ def send_message_check_invalid_inputs(user_message: str, is_debug: bool) -> bool
     if(is_debug and not user_message.startswith('!dev_')):
         print('Debug mode is enabled but the message does not start with "dev"')
         return False
+
+    if (not is_debug and not user_message.startswith('!')):
+        return False
+
     return True
         
 def trim_user_message_prefix(user_message: str, is_debug: bool) -> str:
