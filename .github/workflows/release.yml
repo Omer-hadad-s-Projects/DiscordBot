@@ -1,0 +1,19 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master  # Trigger on pushes to your default branch
+
+jobs:
+  release:
+    # ensure you reference the correct branch or tag (e.g., @master or @v1)
+    uses: Omer-hadad-s-Projects/workflows/.github/workflows/docker-image-builder.yaml@master
+    with:
+      image_name: thetemani/discord-bot
+      default_branch: master                    
+      changelog_path: CHANGELOG.md             
+      docker_context: .                       
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN:   ${{ secrets.DOCKERHUB_TOKEN }}
