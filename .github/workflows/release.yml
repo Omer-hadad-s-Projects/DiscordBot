@@ -3,11 +3,10 @@ name: Release
 on:
   push:
     branches:
-      - main # Trigger on pushes to your default branch
+      - main
 
 jobs:
   release:
-    # ensure you reference the correct branch or tag (e.g., @master or @v1)
     uses: Omer-hadad-s-Projects/workflows/.github/workflows/docker-image-builder.yaml@master
     with:
       image_name: thetemani/discord-bot
