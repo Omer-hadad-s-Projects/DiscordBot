@@ -2,25 +2,49 @@
 
 This bot allows you to play songs in your Discord server using YouTube links.
 
-## Initial Setup
+## Running with Docker (Recommended)
 
-1. **Add the Discord Bot to Your Server**  
+1. **Create a Discord Bot and Get the Token**  
    Visit the [Discord Developer Portal](https://discord.com/developers/applications) to create your bot and retrieve the bot secret key.
 
-2. **Run the Setup Script**  
-   Execute `setup.sh` and enter the bot secret key when prompted.
+2. **Set Up Environment Variables**  
+   Create a `.env` file next to this README with at least:
 
-3. **Add Admin Tokens (Optional)**  
-   To grant admin privileges, you can add the tokens of admin users.
+   ```env
+   DISCORD_TOKEN=your_bot_token_here
+   # (Optional) Comma-separated numeric user IDs who have admin privileges
+   # Wrap them in square brackets or leave as plain comma list; both work.
+   # Examples:
+   # ADMIN_LIST=[123456789012345678,987654321098765432]
+   # ADMIN_LIST=123456789012345678,987654321098765432
+   ADMIN_LIST=
+   ```
 
-4. **Install Dependencies**  
-   Wait for the setup script to finish installing the necessary project dependencies.
+3. **Run the Docker Image from Docker Hub**  
+   The image is published as `thetemani/discord-bot`:
 
-5. **Launch the Bot**  
-   Run `launch.sh` to start the bot.
+   ```bash
+   docker run --rm --env-file .env thetemani/discord-bot
+   ```
 
-6. **Use the Help Command**  
+## Running Locally (Without Docker)
+
+1. **Create and Activate a Virtual Environment**  
+   Run the setup script, which will create `.venv`, install dependencies, and prompt for your bot token:
+
+   ```bash
+   ./setup.sh
+   ```
+
+2. **Launch the Bot**  
+   After setup completes, start the bot with:
+
+   ```bash
+   ./launch.sh
+   ```
+
+3. **Use the Help Command**  
    In your server chat, type `!help` to see the available commands.
 
-7. **Enjoy Your Music**  
+4. **Enjoy Your Music**  
    Play your favorite songs and enjoy! 😃
