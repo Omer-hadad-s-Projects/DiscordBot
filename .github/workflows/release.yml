@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - master  # Trigger on pushes to your default branch
+      - main # Trigger on pushes to your default branch
 
 jobs:
   release:
@@ -11,7 +11,7 @@ jobs:
     uses: Omer-hadad-s-Projects/workflows/.github/workflows/docker-image-builder.yaml@master
     with:
       image_name: thetemani/discord-bot
-      default_branch: master                    
+      default_branch: main
       changelog_path: CHANGELOG.md             
       docker_context: .                       
     secrets:
