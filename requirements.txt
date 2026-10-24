@@ -1,6 +1,5 @@
 discord.py==2.6.4
 python-dotenv==1.2.1
 PyNaCl==1.6.0
-yt-dlp==2025.11.12
-yt-dlp-ejs
+yt-dlp==2026.10.21
 bgutil-ytdlp-pot-provider
