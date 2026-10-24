@@ -8,6 +8,9 @@ ydl_opts = {
     'format': 'bestaudio/best',
     'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
     'quiet': True,
+    'extractor_args': {
+        'youtubepot-bgutilhttp': {'base_url': ['http://pot-provider:4416']},
+    },
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
