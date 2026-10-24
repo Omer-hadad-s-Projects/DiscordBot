@@ -23,8 +23,9 @@ def get_info(url):
 
 async def play_audio(ctx, info, on_song_end):
     voice_channel = ctx.author.voice.channel
-    if ctx.voice_client is None:
-        await voice_channel.connect()
+    vc = ctx.voice_client
+    if vc is None:
+        vc = await voice_channel.connect()
 
     def after_playing(error):
         if error:
@@ -39,7 +40,6 @@ async def play_audio(ctx, info, on_song_end):
     playUrl = info['url']
     print(playUrl)
     source = discord.FFmpegOpusAudio(playUrl, **FFMPEG_OPTIONS)
-    vc = ctx.voice_client
     vc.play(source, after=after_playing)
 
 async def stop_song_playing(ctx):
