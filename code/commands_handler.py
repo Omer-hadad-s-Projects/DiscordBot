@@ -87,8 +87,8 @@ async def play_song(ctx: Context, info: dict):
        await play_audio(ctx, info, on_song_end)
     except Exception as e:
         await ctx.send(f'An error occurred: {e} leaving voice channel')
-        await leave_voice_channel(ctx)
         is_song_playing = False
+        await leave_voice_channel(ctx)
 
 async def on_song_end(ctx: Context):
     global is_song_playing
