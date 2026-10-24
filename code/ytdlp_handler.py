@@ -8,6 +8,7 @@ ydl_opts = {
     'format': 'bestaudio/best',
     'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
     'quiet': True,
+    'js_runtimes': {'node': {}},
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
