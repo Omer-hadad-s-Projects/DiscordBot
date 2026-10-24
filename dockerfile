@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install dependencies in one layer, clean up after
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ffmpeg \
+    && apt-get install -y --no-install-recommends ffmpeg nodejs \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
